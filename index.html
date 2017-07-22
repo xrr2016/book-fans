@@ -18,20 +18,41 @@
 </head>
 
 <body>
-      <svg width="200px" height="200px">
-          <path id="wave-2" fill="lightblue" d="M 0 100 C 140.6 94.24 45.08 106.32 200 100 A 95 95 0 0 1 0 100 Z">
-             <animate dur="5s" repeatCount="indefinite" attributeName="d" attributeType="XML" values="M0 100 C90 28, 92 179, 200 100 A95 95 0 0 1 0 100 Z; M0 100 C145 100, 41 100, 200 100 A95 95 0 0 1 0 100 Z;
-						M0 100 C90 28, 92 179, 200 100 A95 95 0 0 1 0 100 Z"></animate> 
-          </path>
-      </svg>
-     
-      <svg width="1000" height="200">
-        <path fill="blue" d="M 0 100 C">
-          <animate dur="4s" repeatCount="indefinite" attributeName="d" values=""></animate>
-        </path>
-      </svg>
+  <svg width="200px" height="200px">
+    <path id="wave-2" fill="lightblue" d="M 0 100 C 140.6 94.24 45.08 106.32 200 100 A 95 95 0 0 1 0 100 Z">
+      <animate dur="5s" repeatCount="indefinite" attributeName="d" attributeType="XML" values="M0 100 C90 28, 92 179, 200 100 A95 95 0 0 1 0 100 Z; M0 100 C145 100, 41 100, 200 100 A95 95 0 0 1 0 100 Z;
+						M0 100 C90 28, 92 179, 200 100 A95 95 0 0 1 0 100 Z"></animate>
+    </path>
+  </svg>
 
-  <script src="./src/swave.js"></script>
+  <svg width="1000" height="200">
+    <rect x="0" y="0" width="1000" height="200" stroke="#aaa" fill="transparent" stroke-width="1"></rect>
+    <text x="0" y="0" fill="blue">0</text>
+    <text x="0" y="200" fill="blue">0</text>
+    <text x="0" y="100" fill="blue">100</text>
+    <text x="0" y="10" fill="blue">200</text>
+    <text x="100" y="200" fill="blue">100</text>
+    <text x="200" y="200" fill="blue">200</text>
+    <text x="300" y="200" fill="blue">300</text>
+    <text x="400" y="200" fill="blue">400</text>
+    <text x="500" y="200" fill="blue">500</text>
+    <text x="600" y="200" fill="blue">600</text>
+    <text x="700" y="200" fill="blue">700</text>
+    <text x="800" y="200" fill="blue">800</text>
+    <text x="900" y="200" fill="blue">900</text>
+    <text x="974" y="200" fill="blue">1000</text>
+    <!-- <path d="M 0 100 C 100 200, 400 200, 500 100 C 600 0, 900 0, 1000 100 L 1000 200, 0 200 Z" stroke="blue" fill="transparent"> -->
+    <!-- <animate dur="4s" repeatCount="indefinite" attributeName="d" values="M 0 100 C "></animate>   -->
+    <!-- </path> -->
+    <!-- <path d="M 0 100, Q 250 0, 500 100 T 1000 100 L 1000 200, 0 200 Z" stroke="skyblue" fill="transparent">
+       <animate dur="5s" attributeType="XML" repeatCount="indefinite" attributeName="d" values="M 0 100, Q 250 0, 500 100 T 1000 100 L 1000 200, 0 200 Z; M 0 100, L 1000 100, 1000 200, 0 200 Z"></animate> 
+    </path> -->
+     <circle cx="500" cy="100" r="50" fill="pink">
+       <animate dur="3s" repeatCount="indefinite" attributeName="r" values="50;40;30;20;30;40;50;"></animate>
+     </circle> 
+  </svg>
+
+  <!-- <script src="./src/swave.js"></script> -->
 </body>
 
 </html>
