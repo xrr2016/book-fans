@@ -9,6 +9,7 @@ import 'semantic-ui-css/semantic.min.css';
 import App from './App'
 import registerServiceWorker from './registerServiceWorker';
 import rootReducer from './rootReducer'
+import { userLoggedIn } from './actions/auth'
 
 const store = createStore(
   rootReducer,
@@ -16,6 +17,9 @@ const store = createStore(
     applyMiddleware(thunk)
   )
 )
+
+const token = localStorage.getItem('bookfansJWT')
+if (token) store.dispatch(userLoggedIn({ token }))
 
 ReactDOM.render(
   <BrowserRouter>
