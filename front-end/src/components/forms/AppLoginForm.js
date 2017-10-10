@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import validator from 'validator';
 import PropTypes from 'prop-types'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Message } from 'semantic-ui-react'
 import AppInlineError from '../messages/AppInlineError';
 
 class AppLoginForm extends Component {
@@ -25,7 +25,13 @@ class AppLoginForm extends Component {
     const errors = this.validte(this.state.data)
     this.setState({ errors })
     if (!Object.keys(errors).length) {
-      this.props.submit(this.state.data)
+      this.setState({ loading: true })
+      this.props
+        .submit(this.state.data)
+        .catch(err => this.setState({ 
+          errors: err.response.data.errors,
+          loading: false 
+        }))
     }
   }
 
@@ -37,9 +43,13 @@ class AppLoginForm extends Component {
   }
 
   render () {
-    const { data, errors } = this.state
+    const { data, errors, loading } = this.state
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit} loading={loading}>
+        { errors.global && <Message negative>
+          <Message.Header>出现了不可描述的错误！</Message.Header>
+          <p>{ errors.global }</p>
+        </Message>}
         <Form.Field error={!!errors.email}>
           <label htmlFor="email">Email</label>
           <input 
