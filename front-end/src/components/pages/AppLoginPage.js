@@ -12,7 +12,7 @@ class AppLoginPage extends Component {
   render () {
     return (
       <div>
-        <h1>App Login Page</h1>
+        <h1>用户登录</h1>
         <AppLoginForm  submit={this.submit} />
       </div>
     )

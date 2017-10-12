@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 
 const AppUserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   <Route
-    {...rest}  
-    render={props => 
-      isAuthenticated ? <Component {...props} /> : <Redirect to="/" />} 
+    {...rest}
+    render={props =>
+      isAuthenticated ? <Component {...props} /> : <Redirect to="/" />}
   />
 )
 
@@ -16,7 +16,7 @@ AppUserRoute.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired
 }
 
-function mapState (state) {
+function mapState(state) {
   return {
     isAuthenticated: !!state.user.token
   }

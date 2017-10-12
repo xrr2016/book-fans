@@ -1,29 +1,44 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import unique from 'mongoose-unique-validator'
 
 const userSchema = new mongoose.Schema(
-  { 
-    email: { type: String , required: true, lowercase: true, index: true },
-    passwordHash: { type: String, required: true }
-  }, 
+  {
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      index: true,
+      unique: true
+    },
+    passwordHash: { type: String, required: true },
+    comfirmed: { type: Boolean, default: false }
+  },
   { timestamps: true }
 )
 
+// 生成用户密码
+userSchema.methods.setPassword = function setPassword(password) {
+  this.passwordHash = bcrypt.hashSync(password, 10)
+}
 // 匹配用户密码
-userSchema.methods.isValidPassword = function isValidPassword (password) {
+userSchema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compareSync(password, this.passwordHash)
 }
 // 生成 Token
-userSchema.methods.generateJWT = function generateJWT () {
+userSchema.methods.generateJWT = function generateJWT() {
   return jwt.sign({ email: this.email }, process.env.JWT_SECRET)
 }
 // 验证 Token
-userSchema.methods.authJSON = function authJSON () {
+userSchema.methods.authJSON = function authJSON() {
   return {
     email: this.email,
+    comfirmed: this.comfirmed,
     token: this.generateJWT()
   }
 }
+// 验证邮箱唯一性
+userSchema.plugin(unique, { message: '这个邮箱已经被注册了。' })
 
 export default mongoose.model('User', userSchema)

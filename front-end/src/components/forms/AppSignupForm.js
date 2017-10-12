@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import validator from 'validator'
+import { isEmail } from 'validator'
 import PropTypes from 'prop-types'
 import { Form, Button, Message } from 'semantic-ui-react'
 import AppInlineError from '../messages/AppInlineError'
 
-class AppLoginForm extends Component {
+class AppSignupForm extends Component {
   state = {
     data: {
       email: '',
@@ -13,12 +13,6 @@ class AppLoginForm extends Component {
     loading: false,
     errors: {}
   }
-
-  onChange = e =>
-    this.setState({
-      errors: {},
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    })
 
   onSubmit = e => {
     e.preventDefault()
@@ -35,15 +29,22 @@ class AppLoginForm extends Component {
     }
   }
 
+  onChange = e =>
+    this.setState({
+      errors: {},
+      data: { ...this.state.data, [e.target.name]: e.target.value }
+    })
+
   validte = data => {
     const errors = {}
-    if (!validator.isEmail(data.email)) errors.email = '无效的邮箱地址。'
+    if (!isEmail(data.email)) errors.email = '请提供有效的邮箱地址。'
     if (!data.password) errors.password = '密码不能为空。'
     return errors
   }
 
   render() {
-    const { data, errors, loading } = this.state
+    const { data, loading, errors } = this.state
+
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
         {errors.global && (
@@ -58,7 +59,7 @@ class AppLoginForm extends Component {
             type="email"
             name="email"
             id="email"
-            placeholder="example@example.com"
+            placeholder="请输入你的邮箱"
             value={data.email}
             onChange={this.onChange}
           />
@@ -70,20 +71,22 @@ class AppLoginForm extends Component {
             type="password"
             name="password"
             id="password"
-            placeholder="your password"
+            placeholder="请输入你的密码"
             value={data.password}
             onChange={this.onChange}
           />
           {errors.password && <AppInlineError text={errors.password} />}
         </Form.Field>
-        <Button floated="right" loading={loading} primary>登录</Button>
+        <Button floated="right" primary loading={loading}>
+          注册
+        </Button>
       </Form>
     )
   }
 }
 
-AppLoginForm.propTypes = {
+AppSignupForm.propTypes = {
   submit: PropTypes.func.isRequired
 }
 
-export default AppLoginForm
+export default AppSignupForm

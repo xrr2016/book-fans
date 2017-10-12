@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import auth from './routes/auth'
-
+import user from './routes/user'
 
 dotenv.config()
 const app = express()
@@ -17,6 +17,7 @@ app.get('/*', (req, res) => {
 })
 
 app.use('/api/auth', auth)
+app.use('/api/user', user)
 
 // app.post('/api/auth', (req, res) => {
 //   res.status(400).json({ errors: {global: "用户名或密码错误"} })
