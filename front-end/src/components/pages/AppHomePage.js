@@ -7,7 +7,6 @@ import { logout } from '../../actions/auth'
 
 const AppHomePage = ({ isAuthenticated, logout }) => (
   <div>
-    <h1>主页</h1>
     {isAuthenticated ? (
       <Button color="grey" onClick={() => logout()}>
         注销

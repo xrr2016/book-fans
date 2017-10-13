@@ -13,14 +13,23 @@ const userSchema = new mongoose.Schema(
       unique: true
     },
     passwordHash: { type: String, required: true },
-    comfirmed: { type: Boolean, default: false }
+    comfirmed: { type: Boolean, default: false },
+    comfirmationToken: { type: String, default: '' }
   },
   { timestamps: true }
 )
 
+// 生成用户确认 Token
+userSchema.methods.setConfirmationToken = function setConfirmationToken() {
+  this.comfirmationToken = this.generateJWT()
+}
 // 生成用户密码
 userSchema.methods.setPassword = function setPassword(password) {
   this.passwordHash = bcrypt.hashSync(password, 10)
+}
+// 生成用户确认邮箱链接
+userSchema.methods.generateComfirmEmailUrl = function generateComfirmEmailUrl() {
+  return `${process.env.HOST}/comfirmation/${this.comfirmationToken}`
 }
 // 匹配用户密码
 userSchema.methods.isValidPassword = function isValidPassword(password) {
