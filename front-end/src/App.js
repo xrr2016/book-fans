@@ -20,7 +20,7 @@ const App = ({ location }) => (
       <Route location={location} path="/" exact component={AppHomePage} />
       <Route
         location={location}
-        path="/confirmmation/:token"
+        path="/comfirmation/:token"
         exact
         component={AppConfirmationPage}
       />

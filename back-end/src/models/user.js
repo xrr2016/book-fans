@@ -13,15 +13,15 @@ const userSchema = new mongoose.Schema(
       unique: true
     },
     passwordHash: { type: String, required: true },
-    comfirmed: { type: Boolean, default: false },
-    comfirmationToken: { type: String, default: '' }
+    confirmed: { type: Boolean, default: false },
+    confirmationToken: { type: String, default: '' }
   },
   { timestamps: true }
 )
 
 // 生成用户确认 Token
 userSchema.methods.setConfirmationToken = function setConfirmationToken() {
-  this.comfirmationToken = this.generateJWT()
+  this.confirmationToken = this.generateJWT()
 }
 // 生成用户密码
 userSchema.methods.setPassword = function setPassword(password) {
@@ -29,7 +29,7 @@ userSchema.methods.setPassword = function setPassword(password) {
 }
 // 生成用户确认邮箱链接
 userSchema.methods.generateComfirmEmailUrl = function generateComfirmEmailUrl() {
-  return `${process.env.HOST}/comfirmation/${this.comfirmationToken}`
+  return `${process.env.HOST}/comfirmation/${this.confirmationToken}`
 }
 // 匹配用户密码
 userSchema.methods.isValidPassword = function isValidPassword(password) {
@@ -37,13 +37,16 @@ userSchema.methods.isValidPassword = function isValidPassword(password) {
 }
 // 生成 Token
 userSchema.methods.generateJWT = function generateJWT() {
-  return jwt.sign({ email: this.email }, process.env.JWT_SECRET)
+  return jwt.sign(
+    { email: this.email, confirmed: this.confirmed },
+    process.env.JWT_SECRET
+  )
 }
 // 验证 Token
 userSchema.methods.authJSON = function authJSON() {
   return {
     email: this.email,
-    comfirmed: this.comfirmed,
+    confirmed: this.confirmed,
     token: this.generateJWT()
   }
 }

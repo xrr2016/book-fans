@@ -2,25 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import AppComfirmEmailMessage from '../messages/AppComfirmEmailMessage'
-// class AppDashboard extends Component {
-//   render () {
 
-//   }
-// }
-
-const AppDashboard = ({ isComfirmed }) => (
+const AppDashboard = ({ isConfirmed }) => (
   <div>
-    {!isComfirmed && <AppComfirmEmailMessage />}
+    {!isConfirmed && <AppComfirmEmailMessage />}
   </div>
 )
 
 AppDashboard.propTypes = {
-  isComfirmed: PropTypes.bool.isRequired
+  isConfirmed: PropTypes.bool.isRequired
 }
 
 function mapState (state) {
   return {
-    isComfirmed: !!state.user.comfirmed
+    isConfirmed: !!state.user.confirmed
   }
 }
 

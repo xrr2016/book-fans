@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import decode from 'jwt-decode'
 import { createStore, applyMiddleware } from 'redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import thunk from 'redux-thunk'
@@ -16,8 +17,15 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 )
 
-const token = localStorage.getItem('bookfansJWT')
-if (token) store.dispatch(userLoggedIn({ token }))
+if (localStorage.bookfansJWT) {
+  const payload = decode(localStorage.getItem('bookfansJWT'))
+  const user = {
+    token: payload.token,
+    email: payload.email,
+    confirmed: payload.confirmed
+  }
+  store.dispatch(userLoggedIn(user))
+}
 
 ReactDOM.render(
   <BrowserRouter>
