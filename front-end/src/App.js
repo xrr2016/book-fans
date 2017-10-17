@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom'
 import AppHomePage from './components/pages/AppHomePage'
 import AppConfirmationPage from './components/pages/AppConfirmationPage'
@@ -8,19 +9,15 @@ import AppSignupPage from './components/pages/AppSignupPage'
 import AppForgotPassword from './components/pages/AppForgotPassword'
 import AppResetPassword from './components/pages/AppResetPassword'
 import AppDashboard from './components/pages/AppDashboard'
+import AppNewBookPage from './components/pages/AppNewBookPage'
 import AppUserRoute from './components/routes/AppUserRoute'
 import AppGuestRoute from './components/routes/AppGuestRoute'
+import AppNavigation from './components/navigation/AppNavigation'
 
-const App = ({ location }) => (
+const App = ({ location, isAuthenticated }) => (
   <div>
-    <div className="ui fixed inverted menu" style={{ height: 56 }}>
-      <div className="ui container">
-        <Link to="/" className="header item">
-          主页
-        </Link>
-      </div>
-    </div>
-    <div className="ui main text container" style={{ marginTop: '7em' }}>
+    <div className="ui container">
+      {isAuthenticated && <AppNavigation />}
       <Route location={location} path="/" exact component={AppHomePage} />
       <Route
         location={location}
@@ -64,6 +61,12 @@ const App = ({ location }) => (
         exact
         component={AppDashboard}
       />
+      <AppUserRoute
+        location={location}
+        path="/books/new"
+        exact
+        component={AppNewBookPage}
+      />
     </div>
   </div>
 )
@@ -71,7 +74,14 @@ const App = ({ location }) => (
 App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 }
 
-export default App
+function mapState(state) {
+  return {
+    isAuthenticated: !!state.user.email
+  }
+}
+
+export default connect(mapState)(App)

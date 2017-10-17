@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button } from 'semantic-ui-react'
+import { Button,Header } from 'semantic-ui-react'
 import { logout } from '../../actions/auth'
 
 const AppHomePage = ({ isAuthenticated, logout }) => (
   <div>
+    <Header as='h4' inverted color='purple'>主页</Header>
     {isAuthenticated ? (
       <Button color="grey" onClick={() => logout()}>
         注销
