@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import validator from 'validator'
 import PropTypes from 'prop-types'
 import { Form, Button, Message } from 'semantic-ui-react'
 import AppInlineError from '../messages/AppInlineError'
 
-class AppLoginForm extends Component {
+class AppResetPasswordForm extends Component {
   state = {
     data: {
-      email: '',
-      password: ''
+      token: this.props.token,
+      password: '',
+      repeatPassword: ''
     },
     loading: false,
     errors: {}
@@ -26,19 +26,14 @@ class AppLoginForm extends Component {
     this.setState({ errors })
     if (!Object.keys(errors).length) {
       this.setState({ loading: true })
-      this.props.submit(this.state.data).catch(err =>
-        this.setState({
-          errors: err.response.data.errors,
-          loading: false
-        })
-      )
+      this.props.submit(this.state.data)
     }
   }
 
   validte = data => {
     const errors = {}
-    if (!validator.isEmail(data.email)) errors.email = '无效的邮箱地址。'
-    if (!data.password) errors.password = '密码不能为空。'
+    if (!data.password) errors.password = '密码不能为空'
+    if (data.password !== data.repeatPassword) errors.password = '两次密码必须相同'
     return errors
   }
 
@@ -46,45 +41,42 @@ class AppLoginForm extends Component {
     const { data, errors, loading } = this.state
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
-        {errors.global && (
-          <Message negative>
-            <p>{errors.global}</p>
-          </Message>
-        )}
-        <Form.Field error={!!errors.email}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="example@example.com"
-            value={data.email}
-            onChange={this.onChange}
-          />
-          {errors.email && <AppInlineError text={errors.email} />}
-        </Form.Field>
+        {!!errors.global && <Message negative>{errors.global}</Message>}
         <Form.Field error={!!errors.password}>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">新的密码</label>
           <input
             type="password"
             name="password"
             id="password"
-            placeholder="your password"
+            placeholder="你的新密码"
             value={data.password}
             onChange={this.onChange}
           />
           {errors.password && <AppInlineError text={errors.password} />}
         </Form.Field>
+        <Form.Field error={!!errors.password}>
+          <label htmlFor="repeatPassword">重复你的新密码</label>
+          <input
+            type="password"
+            name="repeatPassword"
+            id="repeatPassword"
+            placeholder="你的新密码"
+            value={data.repeatPassword}
+            onChange={this.onChange}
+          />
+          {errors.password && <AppInlineError text={errors.password} />}
+        </Form.Field>
         <Button floated="right" loading={loading} primary>
-          登录
+          重置密码
         </Button>
       </Form>
     )
   }
 }
 
-AppLoginForm.propTypes = {
-  submit: PropTypes.func.isRequired
+AppResetPasswordForm.propTypes = {
+  submit: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired
 }
 
-export default AppLoginForm
+export default AppResetPasswordForm

@@ -25,3 +25,10 @@ export const confirm = token => dispatch =>
     localStorage.setItem('bookfansJWT', user.token)
     dispatch(userLoggedIn(user))
   })
+// 忘记密码
+export const resetPasswordResquest = ({ email }) => () =>
+  api.user.resetPasswordResquest(email)
+// 验证 Token
+export const validateToken = token => () => api.user.validateToken(token)
+// 重置密码
+export const resetPassword = data => () => api.user.resetPassword(data)

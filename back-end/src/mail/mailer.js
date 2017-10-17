@@ -27,6 +27,20 @@ export function sendConfirmationEmail(user) {
   transport.sendMail(email)
 }
 
+// 向用户发生重置密码邮件
+export function sendResetPasswordEmail(user) {
+  const transport = setupTransport()
+  const email = {
+    from,
+    to: user.email,
+    subject: '重置密码',
+    text: `
+      点击以下链接去重置密码
+      ${user.generateResetPasswordLink()}
+    `
+  }
+  transport.sendMail(email)
+}
 
 
 

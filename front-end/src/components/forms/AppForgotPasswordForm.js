@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import validator from 'validator'
+import { isEmail } from 'validator'
 import PropTypes from 'prop-types'
 import { Form, Button, Message } from 'semantic-ui-react'
 import AppInlineError from '../messages/AppInlineError'
 
-class AppLoginForm extends Component {
+class AppForgotPasswordForm extends Component {
   state = {
     data: {
-      email: '',
-      password: ''
+      email: ''
     },
     loading: false,
     errors: {}
@@ -37,8 +36,7 @@ class AppLoginForm extends Component {
 
   validte = data => {
     const errors = {}
-    if (!validator.isEmail(data.email)) errors.email = '无效的邮箱地址。'
-    if (!data.password) errors.password = '密码不能为空。'
+    if (!isEmail(data.email)) errors.email = '无效的邮箱地址。'
     return errors
   }
 
@@ -46,13 +44,9 @@ class AppLoginForm extends Component {
     const { data, errors, loading } = this.state
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
-        {errors.global && (
-          <Message negative>
-            <p>{errors.global}</p>
-          </Message>
-        )}
+        {!!errors.global && <Message negative>{errors.global}</Message>}
         <Form.Field error={!!errors.email}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">你的邮箱地址</label>
           <input
             type="email"
             name="email"
@@ -63,28 +57,16 @@ class AppLoginForm extends Component {
           />
           {errors.email && <AppInlineError text={errors.email} />}
         </Form.Field>
-        <Form.Field error={!!errors.password}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="your password"
-            value={data.password}
-            onChange={this.onChange}
-          />
-          {errors.password && <AppInlineError text={errors.password} />}
-        </Form.Field>
         <Button floated="right" loading={loading} primary>
-          登录
+          发送重置密码邮件
         </Button>
       </Form>
     )
   }
 }
 
-AppLoginForm.propTypes = {
+AppForgotPasswordForm.propTypes = {
   submit: PropTypes.func.isRequired
 }
 
-export default AppLoginForm
+export default AppForgotPasswordForm

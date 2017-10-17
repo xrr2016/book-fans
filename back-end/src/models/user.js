@@ -31,6 +31,11 @@ userSchema.methods.setPassword = function setPassword(password) {
 userSchema.methods.generateComfirmEmailUrl = function generateComfirmEmailUrl() {
   return `${process.env.HOST}/comfirmation/${this.confirmationToken}`
 }
+// 生成重置密码链接
+userSchema.methods.generateResetPasswordLink = function generateResetPasswordLink() {
+  return `${process.env
+    .HOST}/reset_password/${this.generateResetPasswordToken()}`
+}
 // 匹配用户密码
 userSchema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compareSync(password, this.passwordHash)
@@ -41,6 +46,12 @@ userSchema.methods.generateJWT = function generateJWT() {
     { email: this.email, confirmed: this.confirmed },
     process.env.JWT_SECRET
   )
+}
+// 生成重置密码Token
+userSchema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
+  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: '1h'
+  })
 }
 // 验证 Token
 userSchema.methods.authJSON = function authJSON() {
